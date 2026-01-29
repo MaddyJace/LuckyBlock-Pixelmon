@@ -1,0 +1,127 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url = 'https://maven.minecraftforge.net/' }
+
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = '1.1'
+group = 'net.luckyblockpixelmon.maddyjace.PluginMain'
+archivesBaseName = 'LuckyBlockPixelmon'
+ext {
+    // 插件作者
+    authors = ['MaddyJace']
+    // 插件介绍
+    description = 'This plugin has no introduction!'
+    // 硬依赖
+    depend = []
+    // 软依赖
+    softdepend = []
+    // 必须在某某某插件加载后才能加载
+    loadbefore = []
+}
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+processResources {
+    inputs.properties(
+            version: project.version,
+            archivesBaseName: project.archivesBaseName,
+            mainClass: project.group,
+            description: project.ext.description,
+            authors: project.ext.authors,
+            depend: project.ext.depend,
+            softdepend: project.ext.softdepend,
+            loadbefore: project.ext.loadbefore
+
+    )
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand(
+                version: project.version,
+                archivesBaseName: project.archivesBaseName,
+                mainClass: project.group,
+                description: project.ext.description,
+                authors: project.ext.authors,
+                depend: project.ext.depend,
+                softdepend: project.ext.softdepend,
+                loadbefore: project.ext.loadbefore
+        )
+    }
+}
+
+minecraft {
+    mappings channel: 'snapshot', version: '20171003-1.12'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+        server {
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+dependencies {
+    implementation fileTree(dir: 'libs',includes: ['*.jar'])
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    // implementation 'https://mvnrepository.com/artifact/org.mvel/mvel2'
+    // implementation 'org.mvel:mvel2:2.5.2.Final'
+}
+
+jar {
+//    from {
+//        /*
+//        configurations.runtimeClasspath.findAll {
+//            it.name.contains("mvel2")
+//        }.collect { it.isDirectory() ? it : zipTree(it) }
+//         */
+//        // 只打包指定的 jar，比如 mvel2.jar
+//        def jarsToInclude = [
+//                file('libs/MiniExpr-1.0.jar')
+//        ]
+//        jarsToInclude.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+    manifest {
+        attributes([
+            "Specification-Title"     : project.archivesBaseName, //
+            "Specification-Vendor"    : "MaddyJace",
+            "Specification-Version"   : "1", // We are version 1 of ourselves
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : "${version}",
+            "Implementation-Vendor"   :"MaddyJace",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+
+

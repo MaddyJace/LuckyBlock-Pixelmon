@@ -1,0 +1,13 @@
+# 插件信息
+pluginName: "&7[&eLucky&eBlock&6Pixelmon]"
+
+# command
+reload: "{0}: &a完成重载！"
+commandCorrectUsage: "{0}: 命令正确用法&c/lbp reload"
+
+# autoReload
+autoReloadError:   "&c自动重载功能未能启用！"
+autoReloadCreate:  "&a自动重新载入配置 {1}"
+autoReloadChange:  "&a自动重新载入配置 {1}"
+autoReloadDelete:  "&c自动删除配置文件 {1}"
+autoReloadRestart: "&e{1}发生变化无法重载局部功能，但插件已正常重启！"

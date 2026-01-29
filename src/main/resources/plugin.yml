@@ -1,0 +1,19 @@
+name: ${archivesBaseName}
+version: ${version}
+main: ${mainClass}
+authors: ${authors}
+description: ${description}
+depend: ${depend}
+softdepend: ${softdepend}
+loadbefore: ${loadbefore}
+
+commands:
+  luckyblockpixelmon:
+    description: Main plugin command.
+    aliases: [lbp,luckyblockpixelmon]
+    permission: luckyblockpixelmon.admin
+
+permissions:
+  luckyblockpixelmon.admin:
+    description: Gives the player access to the main plugin command.
+    default: op
