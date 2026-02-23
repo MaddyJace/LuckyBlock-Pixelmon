@@ -125,5 +125,5 @@ luckyBlock:
     commands:
       - "console: Hello"
     pokemon:
-      - "Pikachu"
+      - "Pikachu" 
 ```
