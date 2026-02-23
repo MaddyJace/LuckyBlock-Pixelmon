@@ -1,6 +1,8 @@
 package net.luckyblockpixelmon.maddyjace.luckyblock;
 
 import net.luckyblockpixelmon.maddyjace.util.Folder;
+import net.luckyblockpixelmon.maddyjace.util.Get;
+import net.luckyblockpixelmon.maddyjace.util.Language;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,7 +22,14 @@ public enum LuckyBlockDataLoad {
         luckyBlockMap.clear();
         Folder.getAllFiles(luckyBlockFolder,(noExtension, file) -> {
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-            luckyBlockMap.put(noExtension, parseYAMLData(noExtension, yaml));
+            try {
+                LuckyBlockField lbf = parseYAMLData(noExtension, yaml);
+                luckyBlockMap.put(noExtension, lbf);
+            } catch (Exception e) {
+                String error = Language.Get.translate(Language.getServerLanguage(),
+                        "parseYAMLDataError", e.getMessage());
+                Get.plugin().getLogger().severe(error);
+            }
         });
     }
 
@@ -42,9 +51,39 @@ public enum LuckyBlockDataLoad {
         String lb = "luckyBlock.";
 
         lbf.blockName  = YAML.getString(lb + "block", null); // 方块
+
+        // 传说概率
+        double legendaryProbability = YAML.getDouble(lb + "legendaryProbability", -1);
+        if (legendaryProbability < 0) {
+            String error = Language.Get.translate(Language.getServerLanguage(),
+                    "parseYAMLDataLegendaryProbabilityError", noFileExtension, lb);
+            throw new IllegalStateException(error);
+        }
+        lbf.legendaryProbability = legendaryProbability;
+
+        // 史诗概率
+        double epicProbability = YAML.getDouble(lb + "epicProbability", -1);
+        if (epicProbability < 0) {
+            String error = Language.Get.translate(Language.getServerLanguage(),
+                    "parseYAMLDataEpicProbabilityError", noFileExtension, lb);
+            throw new IllegalStateException(error);
+        }
+        lbf.epicProbability = epicProbability;
+
+        // 普通概率
+        double normalProbability = YAML.getDouble(lb + "normalProbability", -1);
+        if (normalProbability < 0) {
+            String error = Language.Get.translate(Language.getServerLanguage(),
+                    "parseYAMLDataNormalProbabilityError", noFileExtension, lb);
+            throw new IllegalStateException(error);
+        }
+        lbf.normalProbability = normalProbability;
+
+
         lbf.legBonus = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , true);
             put("enable"  , YAML.getBoolean(lb    + "legBonus.enable", false));
+            put("isShiny" , YAML.getBoolean(lb    + "legBonus.isShiny", false));
             put("count"   , YAML.getLong(lb       + "legBonus.count"));
             put("commands", YAML.getStringList(lb + "legBonus.commands"));
             put("pokemon" , YAML.getStringList(lb + "legBonus.pokemon"));
@@ -52,6 +91,7 @@ public enum LuckyBlockDataLoad {
         lbf.epicBonus = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , true);
             put("enable"  , YAML.getBoolean(lb    + "epicBonus.enable", false));
+            put("isShiny" , YAML.getBoolean(lb    + "epicBonus.isShiny", false));
             put("count"   , YAML.getLong(lb       + "epicBonus.count"));
             put("commands", YAML.getStringList(lb + "epicBonus.commands"));
             put("pokemon" , YAML.getStringList(lb + "epicBonus.pokemon"));
@@ -59,21 +99,21 @@ public enum LuckyBlockDataLoad {
         lbf.legendary = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , false);
             put("enable"      , YAML.getBoolean(lb    + "legendary.enable", false));
-            put("probability" , YAML.getDouble(lb     + "legendary.probability"));
+            put("isShiny"     , YAML.getBoolean(lb    + "legendary.isShiny", false));
             put("commands"    , YAML.getStringList(lb + "legendary.commands"));
             put("pokemon"     , YAML.getStringList(lb + "legendary.pokemon"));
         }}; // 传说
         lbf.epic = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , false);
             put("enable"      , YAML.getBoolean(lb    + "epic.enable", false));
-            put("probability" , YAML.getDouble(lb     + "epic.probability"));
+            put("isShiny"     , YAML.getBoolean(lb    + "epic.isShiny", false));
             put("commands"    , YAML.getStringList(lb + "epic.commands"));
             put("pokemon"     , YAML.getStringList(lb + "epic.pokemon"));
         }}; // 史诗
         lbf.normal = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , false);
             put("enable"      , YAML.getBoolean(lb    + "normal.enable", false));
-            put("probability" , YAML.getDouble(lb     + "normal.probability"));
+            put("isShiny"     , YAML.getBoolean(lb    + "normal.isShiny", false));
             put("commands"    , YAML.getStringList(lb + "normal.commands"));
             put("pokemon"     , YAML.getStringList(lb + "normal.pokemon"));
         }}; // 普通

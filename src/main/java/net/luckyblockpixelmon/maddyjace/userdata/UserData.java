@@ -4,22 +4,20 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.luckyblockpixelmon.maddyjace.luckyblock.LuckyBlockDataLoad;
 import net.luckyblockpixelmon.maddyjace.util.Folder;
-import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum UserData implements Listener {
+public enum UserData {
     INSTANCE;
 
     private Gson gson = new Gson();
     private File userDataFolder;
+    public static final  Map<UUID, String> generatePixelName = new ConcurrentHashMap<>();
     private final Map<UUID, Map<String, PlayerField>> userDataMap = new ConcurrentHashMap<>();
 
     /** 启动时逻辑 */
@@ -27,12 +25,14 @@ public enum UserData implements Listener {
         gson = new Gson();
         userDataFolder = Folder.getConfigFolder("userData");
         userDataMap.clear();
+        generatePixelName.clear();
     }
 
     /** 关闭时逻辑 */
     public void onDisable() {
         saveUserData();
         userDataMap.clear();
+        generatePixelName.clear();
         if (userDataFolder != null) { userDataFolder = null; }
         if (gson != null) { gson = null; }
     }
@@ -56,7 +56,6 @@ public enum UserData implements Listener {
             Map<String, PlayerField> data = userDataMap.get(uuid);
             try { saveMapAsJson(data, file); } catch (IOException ignored) {}
         }
-        userDataMap.clear();
     }
 
     /** 删除指定用户数据 */
@@ -115,7 +114,7 @@ public enum UserData implements Listener {
         } catch (IOException ignored) { }
     }
 
-    private @NotNull Map<String, PlayerField> defaultInitialization() {
+    private Map<String, PlayerField> defaultInitialization() {
         Map<String, PlayerField> boxes = new HashMap<>();
         for (String str : LuckyBlockDataLoad.INSTANCE.getLuckyBlockMap().keySet()) {
             boxes.put(str, new PlayerField(0,0,0,0, 0, 0, 0));
@@ -125,42 +124,21 @@ public enum UserData implements Listener {
 
     /** 保存 Map 回 JSON 文件 */
     public void saveMapAsJson(Map<String, PlayerField> boxes, File jsonFile) throws IOException {
-        FileWriter writer = new FileWriter(jsonFile);
-        gson.toJson(boxes, writer);
-        writer.flush();
-        writer.close();
+        try (Writer writer = new OutputStreamWriter(
+                Files.newOutputStream(jsonFile.toPath()), StandardCharsets.UTF_8)) {
+            gson.toJson(boxes, writer);
+        }
     }
 
     /** 读取 JSON 文件并返回 Map<String, PlayerField> */
     public Map<String, PlayerField> getMapAsJson(File jsonFile) throws IOException {
-        FileReader reader = new FileReader(jsonFile);
-        Type type = new TypeToken<Map<String, PlayerField>>() {}.getType();
-        Map<String, PlayerField> boxes = gson.fromJson(reader, type);
-        saveMapAsJson(boxes, jsonFile);
-        reader.close();
-        return boxes;
-    }
 
-    public Map<String, Map<String, Object>> getMapAsJsonGeneric(File jsonFile) throws IOException {
-        FileReader reader = new FileReader(jsonFile);
-        Type type = new TypeToken<Map<String, Map<String, Object>>>() {}.getType();
-        Map<String, Map<String, Object>> boxes = gson.fromJson(reader, type);
-        reader.close();
-        return boxes;
-    }
+        try (Reader reader = new InputStreamReader(
+                Files.newInputStream(jsonFile.toPath()), StandardCharsets.UTF_8)) {
 
-    /*
-        Map<String, Map<String, Object>> linkedBoxes = new LinkedHashMap<>();
-        for (Map.Entry<String, Map<String, Object>> entry : boxes.entrySet()) {
-            Map<String, Object> fieldMap = entry.getValue();
-            Map<String, Object> orderedMap = new LinkedHashMap<>();
-            orderedMap.put("guaranteedCount", fieldMap.get("guaranteedCount"));
-            orderedMap.put("legendaryCount",  fieldMap.get("legendaryCount"));
-            orderedMap.put("epicCount",       fieldMap.get("epicCount"));
-            orderedMap.put("normalCount",     fieldMap.get("normalCount"));
-
-            linkedBoxes.put(entry.getKey(), orderedMap);
+            Type type = new TypeToken<Map<String, PlayerField>>() {}.getType();
+            return gson.fromJson(reader, type);
         }
-     */
+    }
 
 }

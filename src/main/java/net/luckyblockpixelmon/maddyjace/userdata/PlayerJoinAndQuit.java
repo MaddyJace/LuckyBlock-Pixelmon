@@ -15,17 +15,13 @@ public class PlayerJoinAndQuit implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        Bukkit.getScheduler().runTaskAsynchronously(Get.plugin(), () -> {
-            UserData.INSTANCE.loadUserData(uuid);
-        }); // 异步
+        UserData.INSTANCE.loadUserData(uuid);
     }
 
     /** 当玩家退出时 */
     @EventHandler public void onPlayerQuit(PlayerQuitEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        Bukkit.getScheduler().runTaskAsynchronously(Get.plugin(), () -> {
-            UserData.INSTANCE.removeUserData(uuid, true);
-        }); // 异步
+        UserData.INSTANCE.removeUserData(uuid, true);
     }
 
 }

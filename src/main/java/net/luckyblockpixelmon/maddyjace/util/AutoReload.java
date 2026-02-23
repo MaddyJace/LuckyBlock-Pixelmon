@@ -1,7 +1,7 @@
 package net.luckyblockpixelmon.maddyjace.util;
 
-import net.luckyblockpixelmon.maddyjace.LuckyBlockPixelmon;
 import net.luckyblockpixelmon.maddyjace.luckyblock.LuckyBlockDataLoad;
+import net.luckyblockpixelmon.maddyjace.userdata.UserData;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -79,41 +79,29 @@ public class AutoReload {
         FileAlterationObserver observer = new FileAlterationObserver(folder, combinedFilter);
         observer.addListener(new FileAlterationListenerAdaptor() {
 
+            private final LuckyBlockDataLoad lbd = LuckyBlockDataLoad.INSTANCE;
+
             // 创建
             @Override
             public void onFileCreate(File file) {
                 // 检查 file 父级是否为luckyBlock文件夹中的文件
                 if (file.getParentFile().getName().equalsIgnoreCase("luckyBlock")) {
-                    String noFileExtension = Language.removeSuffix(file.getName());
-                    YamlConfiguration YAML = YamlConfiguration.loadConfiguration(file);
-                    LuckyBlockDataLoad.INSTANCE.getLuckyBlockMap().put(noFileExtension, LuckyBlockDataLoad.INSTANCE.parseYAMLData(noFileExtension, YAML));
-                    Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                        String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                        info(Language.Get.translate(Language.getServerLanguage(), "autoReloadCreate", pluginName, file.getName()));
-                    });
-                    return;
-                }
-
-                // 检查 file 父级是否为language文件夹中的文件
-                if (file.getParentFile().getName().equalsIgnoreCase("language")) {
-                    Language.Get.onDisable();
-                    Language.Get.onEnable();
-                    Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                        String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                        info(Language.Get.translate(Language.getServerLanguage(), "autoReloadDelete", pluginName, file.getName()));
-                    });
-                    return;
-                }
-                // 检查 file 父级是否为WorldRulesManage文件夹中的是否为 config 文件
-                if (file.getParentFile().getName().equalsIgnoreCase("WorldRulesManage")) {
-                    String noFileExtension = Language.removeSuffix(file.getName());
-                    if (noFileExtension != null && noFileExtension.equalsIgnoreCase("config")) {
-                        LuckyBlockPixelmon.INSTANCE.onDisable();
-                        LuckyBlockPixelmon.INSTANCE.onEnable();
+                    String noFileExtension = Language.removeSuffix(file.getName());     // 文件名称(无扩展名)
+                    YamlConfiguration YAML = YamlConfiguration.loadConfiguration(file); // 配置文件
+                    try {
+                        // 载入配置文件
+                        lbd.getLuckyBlockMap().put(noFileExtension, lbd.parseYAMLData(noFileExtension, YAML));
                         Bukkit.getScheduler().runTask(Get.plugin(), () -> {
+                            // 重新载入用户数据
+                            PlayerUtil.forEachOnlinePlayer(player -> UserData.INSTANCE.loadUserData(player.getUniqueId()));
+                            // 向控制台发送信息
                             String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                            info(Language.Get.translate(Language.getServerLanguage(), "reload", pluginName, file.getName()));
+                            info(Language.Get.translate(Language.getServerLanguage(), "autoReloadCreate", pluginName, file.getName()));
                         });
+                    } catch (Exception e) {
+                        String error = Language.Get.translate(Language.getServerLanguage(),
+                                "parseYAMLDataError", e.getMessage());
+                        Get.plugin().getLogger().severe(error);
                     }
                 }
             }
@@ -123,35 +111,21 @@ public class AutoReload {
             public void onFileChange(File file) {
                 // 检查 file 父级是否为luckyBlock文件夹中的文件
                 if (file.getParentFile().getName().equalsIgnoreCase("luckyBlock")) {
-                    String noFileExtension = Language.removeSuffix(file.getName());
-                    YamlConfiguration YAML = YamlConfiguration.loadConfiguration(file);
-                    LuckyBlockDataLoad.INSTANCE.getLuckyBlockMap().put(noFileExtension, LuckyBlockDataLoad.INSTANCE.parseYAMLData(noFileExtension, YAML));
-                    Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                        String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                        info(Language.Get.translate(Language.getServerLanguage(), "autoReloadChange", pluginName, file.getName()));
-                    });
-                    return;
-                }
-                // 检查 file 父级是否为language文件夹中的文件
-                if (file.getParentFile().getName().equalsIgnoreCase("language")) {
-                    Language.Get.onDisable();
-                    Language.Get.onEnable();
-                    Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                        String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                        info(Language.Get.translate(Language.getServerLanguage(), "autoReloadChange", pluginName, file.getName()));
-                    });
-                    return;
-                }
-                // 检查 file 父级是否为LuckyBlockPixelmon文件夹中的是否为 config 文件
-                if (file.getParentFile().getName().equalsIgnoreCase("LuckyBlockPixelmon")) {
-                    String noFileExtension = Language.removeSuffix(file.getName());
-                    if (noFileExtension != null && noFileExtension.equalsIgnoreCase("config")) {
-                        LuckyBlockPixelmon.INSTANCE.onDisable();
-                        LuckyBlockPixelmon.INSTANCE.onEnable();
+                    String noFileExtension = Language.removeSuffix(file.getName());     // 文件名称(无扩展名)
+                    YamlConfiguration YAML = YamlConfiguration.loadConfiguration(file); // 配置文件
+                    try {
+                        // 载入配置文件
+                        lbd.getLuckyBlockMap().put(noFileExtension, lbd.parseYAMLData(noFileExtension, YAML));
                         Bukkit.getScheduler().runTask(Get.plugin(), () -> {
+                            // 向控制台发送信息
                             String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                            info(Language.Get.translate(Language.getServerLanguage(), "reload", pluginName, file.getName()));
+                            info(Language.Get.translate(Language.getServerLanguage(), "autoReloadCreate", pluginName, file.getName()));
                         });
+                    } catch (Exception e) {
+                        lbd.getLuckyBlockMap().remove(noFileExtension);
+                        String error = Language.Get.translate(Language.getServerLanguage(),
+                                "parseYAMLDataError", e.getMessage());
+                        Get.plugin().getLogger().severe(error);
                     }
                 }
             }
@@ -161,39 +135,21 @@ public class AutoReload {
             public void onFileDelete(File file) {
                 // 检查 file 父级是否为luckyBlock文件夹中的文件
                 if (file.getParentFile().getName().equalsIgnoreCase("luckyBlock")) {
+                    // 文件名称(无扩展名)
                     String noFileExtension = Language.removeSuffix(file.getName());
+                    // 卸载配置文件
                     LuckyBlockDataLoad.INSTANCE.getLuckyBlockMap().remove(noFileExtension);
                     Bukkit.getScheduler().runTask(Get.plugin(), () -> {
+                        // 重新载入用户数据
+                        PlayerUtil.forEachOnlinePlayer(player -> UserData.INSTANCE.loadUserData(player.getUniqueId()));
+                        // 向控制台发送信息
                         String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
                         info(Language.Get.translate(Language.getServerLanguage(), "autoReloadDelete", pluginName, file.getName()));
                     });
-                    return;
                 }
-                // 检查 file 父级是否为language文件夹中的文件
-                if (file.getParentFile().getName().equalsIgnoreCase("language")) {
-                    Language.Get.onDisable();
-                    Language.Get.onEnable();
-                    Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                        String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                        info(Language.Get.translate(Language.getServerLanguage(), "autoReloadDelete", pluginName, file.getName()));
-                    });
-                    return;
-                }
-                // 检查 file 父级是否为LuckyBlockPixelmon文件夹中的是否为 config 文件
-                if (file.getParentFile().getName().equalsIgnoreCase("LuckyBlockPixelmon")) {
-                    String noFileExtension = Language.removeSuffix(file.getName());
-                    if (noFileExtension != null && noFileExtension.equalsIgnoreCase("config")) {
-                        LuckyBlockPixelmon.INSTANCE.onDisable();
-                        LuckyBlockPixelmon.INSTANCE.onEnable();
-                        Bukkit.getScheduler().runTask(Get.plugin(), () -> {
-                            String pluginName = Language.Get.translate(Language.getServerLanguage(), "pluginName");
-                            info(Language.Get.translate(Language.getServerLanguage(), "reload", pluginName, file.getName()));
-                        });
-                    }
-                }
-
             }
         });
+
         return observer;
     }
 
@@ -207,7 +163,6 @@ public class AutoReload {
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
-
 
     /** 向控制台发送 "创建", "修改", "删除" 文件的信息*/
     private static void info(String fileName) {

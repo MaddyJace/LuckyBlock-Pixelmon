@@ -22,7 +22,6 @@ public final class PluginMain extends JavaPlugin {
         this.getCommand("luckyblockpixelmon").setTabCompleter(commandHandler); // Tab
 
         LuckyBlockPixelmon.INSTANCE.onEnable();
-        autoReloadStop();
         autoReloadStart();
 
         if (Config.INSTANCE.generatePokemonList) {
@@ -54,6 +53,7 @@ public final class PluginMain extends JavaPlugin {
     }
 
     @Override public void onDisable() {
+        autoReloadStop();
         LuckyBlockPixelmon.INSTANCE.onDisable();
     }
 

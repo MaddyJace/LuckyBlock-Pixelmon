@@ -24,7 +24,7 @@ ext {
     // 硬依赖
     depend = []
     // 软依赖
-    softdepend = []
+    softdepend = ['PlaceholderAPI']
     // 必须在某某某插件加载后才能加载
     loadbefore = []
 }

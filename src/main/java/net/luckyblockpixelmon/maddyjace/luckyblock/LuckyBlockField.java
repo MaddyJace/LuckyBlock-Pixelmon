@@ -9,4 +9,9 @@ public class LuckyBlockField {
     public Map<String, Object> legendary; // 传说
     public Map<String, Object> epic;      // 史诗
     public Map<String, Object> normal;    // 普通
+
+    public double legendaryProbability;
+    public double epicProbability;
+    public double normalProbability;
+
 }

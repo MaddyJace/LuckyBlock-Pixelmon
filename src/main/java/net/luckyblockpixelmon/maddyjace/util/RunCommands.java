@@ -23,38 +23,65 @@ public class RunCommands {
 
     private static void hasPrefix(String command, Player player) {
         String[] result = parseCommand(command);
-        if (result == null || result.length != 2) return;
+        if (result == null || result.length != 2 || player == null) return;
+
+        String resultCol = result[1].replace("&", "§");
 
         switch (result[0].toUpperCase()) {
-            case "COMMAND"   : runAsPlayer   (parse(player, result[1]), player); break;
-            case "OP"        : runAsOp       (parse(player, result[1]), player); break;
-            case "CONSOLE"   : runAsConsole  (parse(player, result[1])); break;
-            case "TELL"      : sendTell      (parse(player, result[1]), player); break;
-            case "TITLE"     : sendTitle     (parse(player, result[1]), player); break;
-            case "ACTIONBAR" : sendActionBar (parse(player, result[1]), player); break;
+            case "COMMAND"   : runAsPlayer   (parse(player, resultCol), player); break;
+            case "OP"        : runAsOp       (parse(player, resultCol), player); break;
+            case "CONSOLE"   : runAsConsole  (parse(player, resultCol)); break;
+            case "TELL"      : sendTell      (parse(player, resultCol), player); break;
+            case "TITLE"     : sendTitle     (parse(player, resultCol), player); break;
+            case "ACTIONBAR" : sendActionBar (parse(player, resultCol), player); break;
 
             case "COMMANDALL"   :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> runAsPlayer(parse(myPlayer, result[1]), player)); break;
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            runAsPlayer(papi, myPlayer);
+                        }); break;
             case "OPALL"        :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> runAsOp(parse(player, replacePlayer(result[1], player.getName())), player));
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            runAsOp(papi, myPlayer);
+                        });
                 break;
             case "CONSOLEALL"   :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> runAsConsole(parse(player, replacePlayer(result[1], player.getName()))));
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            runAsConsole(papi);
+                        });
                 break;
             case "TELLALL"      :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> sendTell(parse(player, replacePlayer(result[1], player.getName())), player));
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            sendTell(papi, myPlayer);
+                        });
                 break;
             case "TITLEALL"     :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> sendTitle(parse(player, replacePlayer(result[1], player.getName())), player));
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            sendTitle(papi, myPlayer);
+                        });
+
                 break;
             case "ACTIONBARALL" :
                 PlayerUtil.forEachOnlinePlayer(
-                        myPlayer -> sendActionBar(parse(player, replacePlayer(result[1], player.getName())), player));
+                        myPlayer -> {
+                            String replacePlayerName = replacePlayer(resultCol, myPlayer.getName());
+                            String papi = parse(player, replacePlayerName);
+                            sendActionBar(papi, myPlayer);
+                        });
                 break;
         }
     }

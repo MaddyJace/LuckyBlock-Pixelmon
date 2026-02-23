@@ -1,0 +1,29 @@
+{
+  "幸运方块": {
+    "legBonus": 0,
+    "legBonusCount": 0,
+    "epicBonus": 5,
+    "epicBonusCount": 0,
+    "legendary": 2,
+    "epic": 0,
+    "normal": 5
+  },
+  "异色方块": {
+    "legBonus": 4,
+    "legBonusCount": 0,
+    "epicBonus": 4,
+    "epicBonusCount": 0,
+    "legendary": 0,
+    "epic": 0,
+    "normal": 4
+  },
+  "娘化方块": {
+    "legBonus": 14,
+    "legBonusCount": 0,
+    "epicBonus": 19,
+    "epicBonusCount": 0,
+    "legendary": 1,
+    "epic": 0,
+    "normal": 19
+  }
+}

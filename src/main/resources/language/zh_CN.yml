@@ -6,8 +6,13 @@ reload: "{0}: &a完成重载！"
 commandCorrectUsage: "{0}: 命令正确用法&c/lbp reload"
 
 # autoReload
-autoReloadError:   "&c自动重载功能未能启用！"
-autoReloadCreate:  "&a自动重新载入配置 {1}"
-autoReloadChange:  "&a自动重新载入配置 {1}"
-autoReloadDelete:  "&c自动删除配置文件 {1}"
-autoReloadRestart: "&e{1}发生变化无法重载局部功能，但插件已正常重启！"
+autoReloadError:   "{0}: &c自动重载功能未能启用！"
+autoReloadCreate:  "{0}: &a自动重新载入配置 {1}"
+autoReloadChange:  "{0}: &a自动重新载入配置 {1}"
+autoReloadDelete:  "{0}: &c自动删除配置文件 {1}"
+autoReloadRestart: "{0}: &e{1}发生变化无法重载局部功能，但插件已正常重启！"
+
+parseYAMLDataError: "载入失败 {0}"
+parseYAMLDataLegendaryProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}legendaryProbability"
+parseYAMLDataEpicProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}epicProbability"
+parseYAMLDataNormalProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}normalProbability"

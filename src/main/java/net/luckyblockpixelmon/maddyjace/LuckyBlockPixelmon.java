@@ -1,13 +1,14 @@
 package net.luckyblockpixelmon.maddyjace;
 
+import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
+import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import net.luckyblockpixelmon.maddyjace.listener.BlockBreak;
 import net.luckyblockpixelmon.maddyjace.luckyblock.LuckyBlockDataLoad;
 import net.luckyblockpixelmon.maddyjace.userdata.PlayerJoinAndQuit;
 import net.luckyblockpixelmon.maddyjace.userdata.UserData;
-import net.luckyblockpixelmon.maddyjace.util.Config;
-import net.luckyblockpixelmon.maddyjace.util.Get;
-import net.luckyblockpixelmon.maddyjace.util.Language;
-import net.luckyblockpixelmon.maddyjace.util.PlayerUtil;
+import net.luckyblockpixelmon.maddyjace.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,6 +17,7 @@ public enum LuckyBlockPixelmon {
     INSTANCE; // 单例实例
 
     private BukkitTask autoSaveTask;
+    private PlaceholderApi placeholderAPI;
 
     /** 启动时逻辑 */
     public void onEnable() {
@@ -34,10 +36,18 @@ public enum LuckyBlockPixelmon {
         // 定时保存数据
         scheduledSave();
 
+        // PAPI
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            placeholderAPI = new PlaceholderApi();
+            placeholderAPI.register();
+        }
     }
 
     /** 关闭时逻辑 */
     public void onDisable() {
+        if (placeholderAPI != null) {
+            placeholderAPI.unregister();
+        }
         // 关闭定时保存
         if (autoSaveTask != null && !autoSaveTask.isCancelled()) {
             autoSaveTask.cancel();
