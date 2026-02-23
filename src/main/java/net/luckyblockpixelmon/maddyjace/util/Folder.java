@@ -16,6 +16,9 @@ public class Folder {
         if (!taskFolder.exists()) {
             taskFolder.mkdirs();
             if (folderName.equals("luckyBlock")) {
+                Get.plugin().saveResource("luckyBlock/娘化方块.yml", false);
+                Get.plugin().saveResource("luckyBlock/幸运方块.yml", false);
+                Get.plugin().saveResource("luckyBlock/异色方块.yml", false);
                 Get.plugin().saveResource("luckyBlock/配置示例.yml", false);
             }
         }

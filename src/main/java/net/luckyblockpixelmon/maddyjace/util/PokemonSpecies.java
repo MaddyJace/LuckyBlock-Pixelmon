@@ -18,8 +18,8 @@ public class PokemonSpecies {
 
         // 所有分类
         Map<String, Set<EnumSpecies>> categories = new LinkedHashMap<>();
-        categories.put("allPokemon", new HashSet<>(getDexSortedList()));
-        categories.put("pokemon", new HashSet<>(getFilteredSpecies()));
+        categories.put("allPokemon", new LinkedHashSet<>(getDexSortedList()));
+        categories.put("pokemon", new LinkedHashSet<>(getFilteredSpecies()));
         categories.put("legendaries", EnumSpecies.legendaries);
         categories.put("ultrabeasts", EnumSpecies.ultrabeasts);
         categories.put("onlineTextured", EnumSpecies.onlineTextured);
@@ -69,12 +69,9 @@ public class PokemonSpecies {
     }
 
     public static List<EnumSpecies> getDexSortedList() {
-        return Arrays.stream(EnumSpecies.values())
-                .filter(s -> Integer.parseInt(s.getNationalPokedexNumber()) > 0)
-                .sorted(Comparator.comparingInt(
-                        s -> Integer.parseInt(s.getNationalPokedexNumber())
-                ))
-                .collect(Collectors.toList());
+        List<EnumSpecies> list = new ArrayList<>(Arrays.asList(EnumSpecies.values()));
+        list.sort(Comparator.comparingInt(EnumSpecies::getNationalPokedexInteger));
+        return list;
     }
 
 }
