@@ -12,9 +12,38 @@ LuckyBlockPixelmon/
 │   ├── 幸运方块.yml
 │   ├── 异色方块.yml
 │   └── 配置示例.yml
+├── pixelmonList/
+│   ├── alienTextured.yaml
+│   ├── allPokemon.yaml
+│   ├── alterTextured.yaml
+│   ├── ashenTextured.yaml
+│   ├── cannotDynamax.yaml
+│   ├── creatorTextured.yaml
+│   ├── crystalTextured.yaml
+│   ├── drownedTextured.yaml
+│   ├── genderForm.yaml
+│   ├── halloweenForm.yaml
+│   ├── illegalShinies.yaml
+│   ├── illegalShiniesGalarian.yaml
+│   ├── legendaries.yaml
+│   ├── mfSprite.yaml
+│   ├── mfTextured.yaml
+│   ├── onlineTextured.yaml
+│   ├── pinkTextured.yaml
+│   ├── pokemon.yaml
+│   ├── rainbowTextured.yaml
+│   ├── spiritTextured.yaml
+│   ├── strikeTextured.yaml
+│   ├── summerTextured.yaml
+│   ├── ultrabeasts.yaml
+│   ├── valencianTextured.yaml
+│   ├── valentineTextured.yaml
+│   └── zombieTextured.yaml
 ├── userData/
-│   └── 101239f0-a1ca-30eb-8d95-4597452557ea.json
+│   └── xxxx-xxxx-xxxx-xxxxxx.json
 └── config.yml
+
+
 ```
 
 # 配置示例
