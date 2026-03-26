@@ -80,9 +80,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
                     // 物品名称
-                    String itemName = RunCommands.parse(player,
-                            lbd.getLuckyBlockMap().get(args[2]).itemName.replace("&","§"));
-                    meta.setDisplayName(itemName);
+                    String itemName = lbd.getLuckyBlockMap().get(args[2]).itemName;
+                    if (itemName != null) {
+                        itemName = RunCommands.parse(player, itemName.replace("&","§"));
+                        meta.setDisplayName(itemName);
+                    }
                     // 物品描述
                     List<String> itemLore = lbd.getLuckyBlockMap().get(args[2]).itemLore;
                     if (itemLore != null) {
@@ -94,10 +96,13 @@ public class Commands implements CommandExecutor, TabCompleter {
                     item.setItemMeta(meta);
                 }
                 player.getInventory().addItem(item);
-                String getMessage = lbd.getLuckyBlockMap().get(args[2]).getMessage.replace("&","§");
-                getMessage = RunCommands.parse(player, getMessage);
-                getMessage = getMessage.replaceAll("(?i)\\{stack}", String.valueOf(itemNumber));
-                player.sendMessage(getMessage);
+                String getMessage = lbd.getLuckyBlockMap().get(args[2]).getMessage;
+                if (getMessage != null) {
+                    getMessage = getMessage.replace("&","§");
+                    getMessage = RunCommands.parse(player, getMessage);
+                    getMessage = getMessage.replaceAll("(?i)\\{stack}", String.valueOf(itemNumber));
+                    player.sendMessage(getMessage);
+                }
             } else {
                 sender.sendMessage(Language.Get.translate(Language.getServerLanguage(), "itemDoesNotExist", args[2]));
             }
