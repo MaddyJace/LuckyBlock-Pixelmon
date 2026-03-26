@@ -1,9 +1,5 @@
 package net.luckyblockpixelmon.maddyjace;
 
-import com.pixelmonmod.pixelmon.Pixelmon;
-import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
-import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import net.luckyblockpixelmon.maddyjace.listener.BlockBreak;
 import net.luckyblockpixelmon.maddyjace.luckyblock.LuckyBlockDataLoad;
 import net.luckyblockpixelmon.maddyjace.userdata.PlayerJoinAndQuit;

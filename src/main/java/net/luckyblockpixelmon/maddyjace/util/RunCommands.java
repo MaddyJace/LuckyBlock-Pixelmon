@@ -216,7 +216,7 @@ public class RunCommands {
     }
 
     /** 通过 PlaceholderAPI 解析字符串占位符  */
-    private static String parse(Player player, String str) {
+    public static String parse(Player player, String str) {
         try {
             Class<?> papiClass = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
             java.lang.reflect.Method method = papiClass.getMethod("setPlaceholders", Player.class, String.class);

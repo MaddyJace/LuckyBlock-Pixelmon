@@ -1,5 +1,6 @@
 package net.luckyblockpixelmon.maddyjace.luckyblock;
 
+import java.util.List;
 import java.util.Map;
 
 public class LuckyBlockField {
@@ -13,5 +14,10 @@ public class LuckyBlockField {
     public double legendaryProbability;
     public double epicProbability;
     public double normalProbability;
+
+    // 物品信息
+    public String itemName;
+    public List<String> itemLore;
+    public String getMessage;
 
 }

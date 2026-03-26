@@ -79,6 +79,10 @@ public enum LuckyBlockDataLoad {
         }
         lbf.normalProbability = normalProbability;
 
+        // 物品信息
+        lbf.itemName = YAML.getString(lb + "item.name", YAML.getName());
+        lbf.itemLore = YAML.getStringList(lb + "item.lore");
+        lbf.getMessage = YAML.getString(lb + "item.getMessage", null);
 
         lbf.legBonus = new LinkedHashMap<String, Object>() {{
             put("isBonus"  , true);

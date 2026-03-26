@@ -22,6 +22,12 @@ luckyBlock:
   legendaryProbability: 5.00
   epicProbability: 5.00
   normalProbability: 90.00
+  item:
+    getMessage: "恭喜你获得了{stack}个示例幸运方块"
+    name: 示例幸运方块
+    lore:
+      - "这是一个幸运方块"
+      - "这个幸运方块将演示如何配置"
 
   #
   # 传说保底机制

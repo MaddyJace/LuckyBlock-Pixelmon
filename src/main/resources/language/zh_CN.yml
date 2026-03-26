@@ -4,6 +4,11 @@ pluginName: "&7[&eLucky&eBlock&6Pixelmon]"
 # command
 reload: "{0}: &a完成重载！"
 commandCorrectUsage: "{0}: 命令正确用法&c/lbp reload"
+playersAreOffline: "输入的 {0} 玩家不存在或已离线！"
+itemDoesNotExist: "{0} 的 {1} 物品不存在！"
+itemStackError: "无法给予 {0} 物品，物品数量必须是有效的整数！"
+itemDataError: "无法给予 {0} 物品，物品特殊值必须是有效的整数！"
+noConfigExists: "输入有误不存在的 {0} 方块类型配置！"
 
 # autoReload
 autoReloadError:   "{0}: &c自动重载功能未能启用！"
@@ -13,6 +18,6 @@ autoReloadDelete:  "{0}: &c自动删除配置文件 {1}"
 autoReloadRestart: "{0}: &e{1}发生变化无法重载局部功能，但插件已正常重启！"
 
 parseYAMLDataError: "载入失败 {0}"
-parseYAMLDataLegendaryProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}legendaryProbability"
-parseYAMLDataEpicProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}epicProbability"
-parseYAMLDataNormalProbabilityError: "配置错误或缺失: 问题在 {0} .yml 中的 {1}normalProbability"
+parseYAMLDataLegendaryProbabilityError: "配置错误或缺失: 问题在 {0}.yml 中的 {1}legendaryProbability"
+parseYAMLDataEpicProbabilityError: "配置错误或缺失: 问题在 {0}.yml 中的 {1}epicProbability"
+parseYAMLDataNormalProbabilityError: "配置错误或缺失: 问题在 {0}.yml 中的 {1}normalProbability"

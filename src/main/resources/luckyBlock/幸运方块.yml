@@ -39,6 +39,16 @@ luckyBlock:
   legendaryProbability: 5.00
   epicProbability: 0.00
   normalProbability: 95.00
+  item:
+    getMessage: "%player_name% 你收到了幸运方块*{stack}"
+    name: "&r&e✧ &f幸运方块 &e✧"
+    lore:
+      - "&8方块功能:"
+      - "&8├─&a将方块右键放在地上"
+      - "&8└─&a击碎方块必定生存&e宝可梦"
+      - "&8方块概率:"
+      - "&8├─&c普通概率&e95&%%"
+      - "&8└─&c神兽概率&e5&%%"
 
   #
   # 传说保底机制

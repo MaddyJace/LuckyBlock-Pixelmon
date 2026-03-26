@@ -6,6 +6,15 @@ luckyBlock:
   legendaryProbability: 0.00
   epicProbability: 0.00
   normalProbability: 100.00
+  item:
+    getMessage: "%player_name% 你收到了娘化方块*{stack}"
+    name: "&r&e✧ &f娘化方块 &e✧"
+    lore:
+      - "&8方块功能:"
+      - "&8├─&a将方块右键放在地上"
+      - "&8└─&a击碎方块必定生存&e宝可梦"
+      - "&8方块概率:"
+      - "&8└─&c娘化概率&e100&%%"
 
   # 普通奖品
   normal:
