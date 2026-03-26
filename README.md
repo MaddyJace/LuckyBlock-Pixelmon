@@ -42,8 +42,18 @@ LuckyBlockPixelmon/
 ├── userData/
 │   └── xxxx-xxxx-xxxx-xxxxxx.json
 └── config.yml
+```
+# 权限示例
+```
+命令权限：luckyblockpixelmon.admin
+给予权限：luckyblockpixelmon.give
+重载权限：luckyblockpixelmon.reload
+```
 
-
+# 命令示例
+```
+重载配置：/lbp reload
+给予方块：/lbp give [玩家] [类型] [数量] [数据]
 ```
 
 # 配置示例
