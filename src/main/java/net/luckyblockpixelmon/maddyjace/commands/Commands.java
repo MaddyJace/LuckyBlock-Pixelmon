@@ -108,8 +108,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
             return true;
         }
-
-        sender.sendMessage(Language.Get.translate(Language.getServerLanguage(), "noConfigExists", pluginName));
+        sender.sendMessage(Language.Get.translate(Language.getServerLanguage(), "noConfigExists", args[2]));
         return true;
     }
 
